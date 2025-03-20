@@ -1,0 +1,20 @@
+COPT = - fPIC - std = c99 - Wall - Wextra - Winline - ggdb - Iinclude
+LDFLAGS = - shared -L ./
+LDLIBS = - lbits - lm
+SOURCES = $ ( shell echo *. c )
+OBJ = $ ( SOURCES :. c =. o )
+all : myprogram link . a . so
+PIE Obligatorio 1 - Biblioteca de trabajo con bits 3
+%.o : %.c
+gcc -c -o $@ $ < $ ( COPT ) $ ( LDFLAGS ) $ ( LDLIBS )
+myprogram : $ ( OBJ )
+gcc -o $@ $ ^ $ ( CFLAGS )
+. a : $ ( OBJ )
+gcc $ ( COPT ) $ ( LDFLAGS ) -o libbits . a $ ( OBJ )
+. so : $ ( OBJ )
+gcc $ ( COPT ) $ ( LDFLAGS ) -o libbits . so $ ( OBJ )
+link : $ ( OBJ )
+@ar rcs libbits . a $ ( OBJ )
+clean :
+rm -f *. o *. a *. so myprogram
+
