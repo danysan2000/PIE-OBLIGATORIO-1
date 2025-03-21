@@ -6,10 +6,12 @@
 
 all : libbits.a obligatorio1
 
-COPT = -Wall -ansi -ggdb -O0
+COPT = -Wall -ansi -g -O0
 
 obligatorio1 : obligatorio1.o libbits.a
-	cc $(COPT) -o $@obligatorio1.o -L ./ -lbits
+	echo $<
+	cc $(COPT) $<  -L ./ -lbits -o $@
+
 
 .c.o:
 	cc $(COPT) -c $<
