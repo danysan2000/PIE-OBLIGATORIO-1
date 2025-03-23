@@ -65,7 +65,7 @@ Nota:
 
 int bit(unsigned int buffer, int nb)
 {
-    if ( (nb > (sizeof(int) * 8) ) || nb < 1 ) return -1;
+    if ( (nb > (int)  (sizeof(int) * 8) ) || nb < 1 ) return -1;
     return ( buffer & rotoLeft( 1, nb)  ) ? 1 : 0 ;
 }    
 
@@ -94,7 +94,7 @@ int ver_binario(unsigned int buffer, int nb, FILE* nombreArchivo)
     for( aux1 = nb; aux1 ; aux1-- ) buf[aux1-1]= ( buffer &  rotoLeft(1,nb-aux1+1)  ) ? '1' : '0' ;
     buf[nb] = '\n';
 
-    if ( fwrite( buf,1,nb, nombreArchivo ) != nb ) return -1;
+    if ( (int) fwrite( buf,1,nb, nombreArchivo ) != nb ) return -1;
     return 0;
 }
 
@@ -110,7 +110,7 @@ nb: como entero
 void print_binario(unsigned int buffer, int nb)
 {
     int aux1;
-    if( nb > (sizeof(int) * 8) ) return; /* valido nb */
+    if( nb > (int) (sizeof(int) * 8) ) return; /* valido nb */
     for( aux1=nb; aux1 ; aux1-- )
         printf("%1d", (buffer & rotoLeft( 1, aux1 ) ? 1 : 0 ) );
     printf("\n");
@@ -169,7 +169,7 @@ unsigned int crear_mascara(int max, int min)
     int nb ; /* numero de bits */
 
     /* Valido max y min */
-    if( ( max <= min ) || ( max > (sizeof(unsigned int)* 8) ) ) 
+    if( ( max <= min ) || ( max > (int) (sizeof(unsigned int)* 8) ) ) 
     {
             printf("ERROR en crear_mascara: Parametros invalidos \n" );
             return 0;
@@ -195,7 +195,7 @@ unsigned int espejar(unsigned int in, int nbits)
     unsigned int msk1;
     unsigned int res;
     /* Valido argumentos de entrada */
-    if( nbits > (sizeof(int) * 8 ) )
+    if( nbits > (int) (sizeof(int) * 8 ) )
     {
         printf("Error en espejar: Argumento invalido\n");
         return 0;
@@ -225,7 +225,7 @@ unsigned int extraer(unsigned int buffer, int min, int max)
     unsigned int res;
 
     /* Valido argumentos */
-    if( max > (sizeof(int)* 8) )
+    if( max > (int)(sizeof(int)* 8) )
     {
         printf("Error en extraer: Argumentos invalidos \n");
         return 0;
