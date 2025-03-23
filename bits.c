@@ -63,7 +63,7 @@ Nota:
     pero la restriccion de la letra no se puede usar la libreria math.
 */    
 
-unsigned int bit(unsigned int buffer, int nb)
+int bit(unsigned int buffer, int nb)
 {
     if ( nb > (sizeof(int) * 8) ) 
         return -1;
