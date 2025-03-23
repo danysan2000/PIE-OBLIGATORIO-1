@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-unsigned int    bit(unsigned int buffer, int nb);
+int             bit(unsigned int buffer, int nb);
 
 int             ver_binario(unsigned int buffer, int nb, FILE* nombreArchivo);
 
