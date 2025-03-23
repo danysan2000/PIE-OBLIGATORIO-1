@@ -3,6 +3,9 @@
 #
 #
 
+ARCHIVOS_ENTREGAR= obligatorio1.c bits.c bits.h Makefile
+
+.PHONY: entrega
 
 all : libbits.a obligatorio1
 
@@ -21,3 +24,7 @@ libbits.a : bits.o
 
 clean:
 	rm -f *.o *.a obligatorio1
+
+entrega:
+	zip  alberto_DANIEL_SANCHEZ_LATRONICO.zip   $(ARCHIVOS_ENTREGAR)
+
