@@ -44,8 +44,8 @@ int base,exp;
 
 /* --------------FIN FUNCIONES AUXILIARES ----- */
 
-#define rotoLeft(a , b)   ( a <<(b-1) )  
-#define rotoRight(a , b)  ( a >>(b-1) ) 
+#define rotoLeft(a , b)   ( a <<(b) )  
+#define rotoRight(a , b)  ( a >>(b) ) 
 
 
 /* bit( )
@@ -65,7 +65,7 @@ Nota:
 
 int bit(unsigned int buffer, int nb)
 {
-    if ( (nb > (int)  (sizeof(int) * 8) ) || nb < 1 ) return -1;
+    if ( (nb > (int)  (sizeof(int) * 8) )  ) return -1;
     return ( buffer & rotoLeft( 1, nb)  ) ? 1 : 0 ;
 }    
 
@@ -75,7 +75,7 @@ int bit(unsigned int buffer, int nb)
    de hacerlo, se debe finalizar con un salto de línea.
 
 buffer: como entero sin signo.
-nb: como entero.
+nb: NOTA : aca es la cantidad de bits. 
 nombreArchivo: como puntero a FILE.
 */
 
@@ -86,15 +86,18 @@ int ver_binario(unsigned int buffer, int nb, FILE* nombreArchivo)
     int vsize;
 
     vsize = sizeof(int) * 8;
-    if ( nb > vsize ) return -1; /* error de rango */
+    if ( nb > vsize || nb < 1 ) return -1; /* error de rango */
 
     /*  incializo el vector con cero NO CON '0'  */
-    for( aux1=0; aux1 < 70; aux1++ ) buf[aux1] = 0; 
+    for( aux1=0; aux1 < 70; aux1++ )
+        buf[aux1] = 0; 
     
-    for( aux1 = nb; aux1 ; aux1-- ) buf[aux1-1]= ( buffer &  rotoLeft(1,nb-aux1+1)  ) ? '1' : '0' ;
+    for( aux1 = nb; aux1 ; aux1-- ) 
+        buf[aux1-1]= ( buffer &  rotoLeft(1,nb-aux1)  ) ? '1' : '0' ;
     buf[nb] = '\n';
 
-    if ( (int) fwrite( buf,1,nb, nombreArchivo ) != nb ) return -1;
+    if ( (int) fwrite( buf,1,nb, nombreArchivo ) != nb )
+        return -1;
     return 0;
 }
 
@@ -108,11 +111,12 @@ nb: como entero
 */
 
 void print_binario(unsigned int buffer, int nb)
+    /* aca nb bits no es el numero de bit es la cantidad de bits */
 {
     int aux1;
     if( nb > (int) (sizeof(int) * 8) ) return; /* valido nb */
     for( aux1=nb; aux1 ; aux1-- )
-        printf("%1d", (buffer & rotoLeft( 1, aux1 ) ? 1 : 0 ) );
+        printf("%1d", (buffer & rotoLeft( 1, aux1-1 ) ? 1 : 0 ) );
     printf("\n");
 }
 
@@ -132,7 +136,7 @@ unsigned int setbit(unsigned int buffer, int nb, int val)
     unsigned int msk1;
 
     /* preparo  mascara todos en 1 menos el bit seleccionado en 0 */
-    msk1 =  ~power(2,nb-1);
+    msk1 =  ~power(2,nb);
     res  =  ( buffer & msk1 );
     return  ( val ) ? res | ~msk1 : res;
 }
@@ -144,7 +148,7 @@ unsigned int setbit(unsigned int buffer, int nb, int val)
 buffer: como entero sin signo.
 PIE Obligatorio 1 - Biblioteca de trabajo con bits 8
 codigo: como entero sin signo.
-nb: como entero.
+nb: como entero. Cantidad de bits
 */
 
 unsigned int concatena(unsigned int buffer, unsigned int codigo, int nb)
@@ -200,11 +204,11 @@ unsigned int espejar(unsigned int in, int nbits)
         printf("Error en espejar: Argumento invalido\n");
         return 0;
     }
-    msk1 = power(2,nbits)-1;
-    aux1 =  in & msk1 ;
+    msk1 = power(2,nbits)-1; /* mascara con los primeros nbits en 1   */
+    aux1 =  in & msk1 ;  /* en aux1 me quedan solo los primeros nbits  */
     res = 0;
     for( aux2=nbits ; aux2 ; aux2-- )
-        res = (res << 1) | ( ( aux1 & (1<<(nbits-aux2))) ? 1 : 0 );
+        res = (res << 1) | ( ( aux1 & (1<<(nbits-aux2))) ? 1 : 0 ); /* roto res por 1 y sumo bit a bit  de in enmascarado (aux1) */
     return res ;
 }
 
@@ -231,6 +235,7 @@ unsigned int extraer(unsigned int buffer, int min, int max)
         return 0;
     }
     /*  armo mascara hago and y luego roto derecha */
+       /* msk1 : tengo los bits max-min y roto min a la izq  */
     msk1= ( (power(2,(max-min+1))-1)) << (min) ;
     res = buffer & msk1;
     res = res >> min;

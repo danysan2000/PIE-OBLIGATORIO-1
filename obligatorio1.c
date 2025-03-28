@@ -89,11 +89,14 @@ int main()
                 break;
            case 4:         /*  setbit */
                 {
-                    int buf, nb , val_ent ;
+                    int buf, nb , val_ent, val_sal ;
                     printf("Valor del buffer: "); scanf("%d",&buf); getchar();
+                    print_binario( buf, 32 );
                     printf("Bit numero: "); scanf("%d",&nb); getchar();
                     printf("Valor a setear:"); scanf("%d",&val_ent); getchar();
-                    printf("El buffer seteado es : %d\n", setbit(buf,nb,val_ent) );
+                    val_sal = setbit(buf,nb,val_ent);
+                    printf("El buffer seteado es : %d\n", val_sal );
+                    print_binario( val_sal, 32 );
                     printf("Enter para continuar");getchar();
                 }
                 break;
@@ -137,9 +140,9 @@ int main()
                     printf("Valor del buffer:"); scanf("%d",&buf); getchar();
                     printf("Valor min:"); scanf("%d",&min); getchar();
                     printf("Valor max:"); scanf("%d",&max); getchar();
-                    printf("Valor del buffer\n"); print_binario(buf,32);
+                    printf("Valor del buffer:"); print_binario(buf,32);
                     sal = extraer( buf, min, max );
-                    printf("Valor extraido:"); print_binario(sal,32);
+                    printf("Valor extraido  :"); print_binario(sal,32);
                     printf("Enter para continuar"); getchar();
                 }
                 break;
