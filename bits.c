@@ -85,8 +85,9 @@ int ver_binario(unsigned int buffer, int nb, FILE* nombreArchivo)
     int aux1;
     int vsize;
 
+
     vsize = sizeof(int) * 8;
-    if ( nb > vsize || nb < 1 ) return -1; /* error de rango */
+    if ( nb > vsize || nb < 1  || nombreArchivo == NULL ) return -1; /* error de rango */
 
     /*  incializo el vector con cero NO CON '0'  */
     for( aux1=0; aux1 < 70; aux1++ )
