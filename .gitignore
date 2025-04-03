@@ -2,3 +2,4 @@ PRUEBA_MAKEFILE_OFF/
 *.swp
 *.o
 *.a
+*.so
