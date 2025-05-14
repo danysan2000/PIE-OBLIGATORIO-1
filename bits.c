@@ -8,6 +8,14 @@ MOTIVO:
     ES PARA RESPETAR LA PROGRAMACION MODULAR, UNA FUNCION NO ES USADA DENTRO DE OTRA FUNCION.
     PARA QUE EL LINKEDITOR SOLO TOME LA FUNCION QUE SE USA Y NO CARGUE TODAS LAS FUNCIONES.
     ES EL OBJETIVO DE TODA LIBRERIA QUE SE CARGUE LO QUE SE NECESITA.
+
+-----------------------------------------------------------------------
+NOTA IMPORTANTE: como esta libreria ("") es usada en el OBLIGATORIO 2 Y 3 
+ESTARA EN LINK CON LOS OTROS DIRECTORIOS.
+Sobre la entrega y correccion: 
+      No implemente correctamente la validacion de los argumentos de la funciones,
+	  Gregori me manifesto que hice una parte pero incompleta.
+	  CORRIJO ESA SITUACION.
 */
 
 #include <stdio.h>
@@ -44,7 +52,7 @@ int base,exp;
 
 /* --------------FIN FUNCIONES AUXILIARES ----- */
 
-#define rotoLeft(a , b)   ( a <<(b) )  
+#define rotoLeft(a , b)  ( a <<(b) )  
 #define rotoRight(a , b)  ( a >>(b) ) 
 
 
@@ -65,7 +73,7 @@ Nota:
 
 int bit(unsigned int buffer, int nb)
 {
-    if ( (nb > (int)  (sizeof(int) * 8) )  ) return -1;
+    if ( nb < 0 &&  (nb > (int) (sizeof(int) * 8) )  ) return -1;
     return ( buffer & rotoLeft( 1, nb)  ) ? 1 : 0 ;
 }    
 
@@ -115,7 +123,11 @@ void print_binario(unsigned int buffer, int nb)
     /* aca nb bits no es el numero de bit es la cantidad de bits */
 {
     int aux1;
-    if( nb > (int) (sizeof(int) * 8) ) return; /* valido nb */
+    if( nb < 0 || ( nb > (int)(sizeof(int) * 8) ))
+	{
+		printf("Error en argumentos \n");
+		return; /* valido nb */
+	}
     for( aux1=nb; aux1 ; aux1-- )
         printf("%1d", (buffer & rotoLeft( 1, aux1-1 ) ? 1 : 0 ) );
     printf("\n");
@@ -135,6 +147,8 @@ unsigned int setbit(unsigned int buffer, int nb, int val)
 {
     unsigned int res;
     unsigned int msk1;
+	/* Validacion   */
+	if ( nb < 0 || nb >(int)(sizeof(int)*8 )  || val > 1 || val < 0 ) return 0 ; /* ??? que retorno ?? */
 
     /* preparo  mascara todos en 1 menos el bit seleccionado en 0 */
     msk1 =  ~power(2,nb);
@@ -155,6 +169,12 @@ nb: como entero. Cantidad de bits
 unsigned int concatena(unsigned int buffer, unsigned int codigo, int nb)
 {
     unsigned int  msk1;
+	/* Valido nb  */
+	if ( nb < 0 || nb > (int)(sizeof(int)*8))
+	{
+	   	printf("Error parametros \n");
+		return 0;
+   	}
     msk1 = (power(2,nb)-1)  ; /* pongo en 1 los nb primeros de la mascara */
     return ( ( buffer << nb ) | ( codigo & msk1  ) );
 }
@@ -174,7 +194,7 @@ unsigned int crear_mascara(int max, int min)
     int nb ; /* numero de bits */
 
     /* Valido max y min */
-    if( ( max <= min ) || ( max > (int) (sizeof(unsigned int)* 8) ) ) 
+    if( ( max <= min ) || ( max > (int) (sizeof(unsigned int)* 8) ) || min < 0 ) 
     {
             printf("ERROR en crear_mascara: Parametros invalidos \n" );
             return 0;
@@ -200,7 +220,7 @@ unsigned int espejar(unsigned int in, int nbits)
     unsigned int msk1;
     unsigned int res;
     /* Valido argumentos de entrada */
-    if( nbits > (int) (sizeof(int) * 8 ) )
+    if( nbits > (int) (sizeof(int) * 8 ) || nbits < 0 )
     {
         printf("Error en espejar: Argumento invalido\n");
         return 0;
@@ -230,7 +250,7 @@ unsigned int extraer(unsigned int buffer, int min, int max)
     unsigned int res;
 
     /* Valido argumentos */
-    if( max > (int)(sizeof(int)* 8) )
+    if( max > (int)(sizeof(int)* 8) || min < 0 || (max-min) < 1  )
     {
         printf("Error en extraer: Argumentos invalidos \n");
         return 0;
