@@ -195,7 +195,7 @@ unsigned int crear_mascara(int max, int min)
     int nb ; /* numero de bits */
 
     /* Valido max y min */
-    if( ( max <= min ) || ( max > (int) (sizeof(unsigned int)* 8) ) || min < 0 ) 
+    if( ( max < min ) || ( max > (int) (sizeof(unsigned int)* 8) ) || min < 0 ) 
     {
             printf("ERROR en crear_mascara: Parametros invalidos \n" );
             return 0;
