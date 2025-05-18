@@ -1,4 +1,5 @@
 /*
+ *
 PIE
 OBLIGATORIO 1.
 Archivo contendor de funciones de operacion binarias.
@@ -250,7 +251,7 @@ unsigned int extraer(unsigned int buffer, int min, int max)
     unsigned int res;
 
     /* Valido argumentos */
-    if( max > (int)(sizeof(int)* 8) || min < 0 || (max-min) < 1  )
+    if( max > (int)(sizeof(int)* 8) || min < 0 || (max-min) < 0  )
     {
         printf("Error en extraer: Argumentos invalidos \n");
         return 0;
